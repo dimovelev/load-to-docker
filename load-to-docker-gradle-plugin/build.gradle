@@ -1,7 +1,6 @@
 plugins {
     id 'java-gradle-plugin'
     id 'maven-publish'
-    id 'net.researchgate.release'
     id 'signing'
 }
 
@@ -14,12 +13,13 @@ repositories {
 
 java {
     withSourcesJar()
+    withJavadocJar()
 }
 
 gradlePlugin {
     plugins {
-        simplePlugin {
-            id = 'com.prime157.load-to-docker'
+        loadToDocker {
+            id = 'com.prime157.docker.load-to-docker'
             implementationClass = 'com.prime157.docker.load.maven.LoadToDockerGradlePlugin'
         }
     }
@@ -41,7 +41,7 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
             pom {
-                description = 'Common classes for loading a tarball to docker'
+                description = 'Gradle plugin for loading a tarball to docker'
                 url = 'https://github.com/dimovelev/load-to-docker'
                 inceptionYear = '2022'
                 licenses {
@@ -56,11 +56,19 @@ publishing {
                     connection = 'scm:https://github.com/dimovelev/load-to-docker.git'
                     developerConnection = 'scm:git://github.com/dimovelev/load-to-docker.git'
                 }
+                developers {
+                    developer {
+                        id = 'dimo'
+                        name = 'Dimo Velev'
+                        email = 'dimo@prime157.com'
+                    }
+                }
             }
         }
     }
 }
 
 signing {
-    sign publishing.publications.mavenJava
+    sign publishing.publications
 }
+

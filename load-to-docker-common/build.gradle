@@ -1,10 +1,8 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.researchgate.release'
     id 'signing'
 }
-
 
 group 'com.prime157.docker'
 version '0.1-SNAPSHOT'
@@ -22,6 +20,7 @@ dependencies {
 
 java {
     withSourcesJar()
+    withJavadocJar()
 }
 
 publishing {
@@ -44,11 +43,18 @@ publishing {
                     connection = 'scm:https://github.com/dimovelev/load-to-docker.git'
                     developerConnection = 'scm:git://github.com/dimovelev/load-to-docker.git'
                 }
+                developers {
+                    developer {
+                        id = 'dimo'
+                        name = 'Dimo Velev'
+                        email = 'dimo@prime157.com'
+                    }
+                }
             }
         }
     }
 }
 
 signing {
-    sign publishing.publications.mavenJava
+    sign publishing.publications
 }

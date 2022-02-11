@@ -74,7 +74,7 @@ in `build/jib-image.tar`):
 
 ```groovy
 plugins {
-  id 'com.prime157.load-to-docker' version '0.1-SNAPSHOT'
+  id 'com.prime157.docker.load-to-docker' version '0.1-SNAPSHOT'
 }
 load_to_docker {
   tarball = 'build/jib-image.tar'
@@ -85,4 +85,4 @@ load_to_docker {
   plugin will talk to docker via the named pipe `\\.\pipe\docker_engine`. On linux via the unix domain
   socket `/var/run/docker.sock`.
 * The tarball can either be an absolute path or a path relative to the project's root path.
-* The task is called `other/load-to-docker`
+* The task is called `loadToDocker`

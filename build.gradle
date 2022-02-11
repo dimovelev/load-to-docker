@@ -1,5 +1,6 @@
 plugins {
     id 'net.researchgate.release' version '2.8.1'
+    id 'io.github.gradle-nexus.publish-plugin' version '1.0.0'
 }
 
 group 'com.prime157.docker'
@@ -7,6 +8,9 @@ version '0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
 }
 
 release {
@@ -14,12 +18,21 @@ release {
             net.researchgate.release.GitAdapter,
     ]
     buildTasks = []
+    failOnPublishNeeded = false
     git {
-        requireBranch = 'feature/initial'
+        requireBranch = 'main'
         pushToRemote = 'origin'
         pushToBranchPrefix = ''
         commitVersionFileOnly = false
         signTag = false
     }
 }
-//afterReleaseBuild.dependsOn uploadArchives
+
+nexusPublishing {
+    repositories {
+        sonatype {  //only for users registered in Sonatype after 24 Feb 2021
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
+    }
+}

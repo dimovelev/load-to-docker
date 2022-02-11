@@ -8,6 +8,6 @@ public class LoadToDockerGradlePlugin implements Plugin<Project> {
     public void apply(final Project project) {
         final LoadToDockerExtension extension = project.getExtensions().create("load_to_docker",
             LoadToDockerExtension.class, project);
-        project.getTasks().register("load-to-docker", LoadToDockerTask.class, extension);
+        project.getTasks().register("loadToDocker", LoadToDockerTask.class, extension);
     }
 }

@@ -1,57 +1,75 @@
 plugins {
-    id 'io.freefair.maven-plugin' version '5.3.3.3'
-    id 'maven-publish'
-    id 'net.researchgate.release'
+  id 'io.freefair.maven-plugin' version '5.3.3.3'
+  id 'signing'
 }
 
 group 'com.prime157.docker'
 version '0.1-SNAPSHOT'
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 java {
-    withSourcesJar()
+  withSourcesJar()
+  withJavadocJar()
 }
 
 dependencies {
-    implementation project(':load-to-docker-common')
-    compileOnly 'org.apache.maven:maven-plugin-api:3.6.1'
-    compileOnly 'org.apache.maven:maven-core:3.6.1'
-    compileOnly 'org.apache.maven.plugin-tools:maven-plugin-annotations:3.6.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-}
-
-task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
+  implementation project(':load-to-docker-common')
+  compileOnly 'org.apache.maven:maven-plugin-api:3.6.1'
+  compileOnly 'org.apache.maven:maven-core:3.6.1'
+  compileOnly 'org.apache.maven.plugin-tools:maven-plugin-annotations:3.6.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
 test {
-    useJUnitPlatform()
+  useJUnitPlatform()
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                description = 'Common classes for loading a tarball to docker'
-                url = 'https://github.com/dimovelev/load-to-docker'
-                inceptionYear = '2022'
-                licenses {
-                    license {
-                        name = 'MIT'
-                        url = 'https://opensource.org/licenses/MIT'
-                        distribution = 'repo'
-                    }
-                }
-                scm {
-                    url = 'https://github.com/dimovelev/load-to-docker'
-                    connection = 'scm:https://github.com/dimovelev/load-to-docker.git'
-                    developerConnection = 'scm:git://github.com/dimovelev/load-to-docker.git'
-                }
-            }
+  publications {
+    mavenJava(MavenPublication) {
+      pom {
+        description = 'Maven plugin to load a tarball to docker'
+        url = 'https://github.com/dimovelev/load-to-docker'
+        inceptionYear = '2022'
+        licenses {
+          license {
+            name = 'MIT'
+            url = 'https://opensource.org/licenses/MIT'
+            distribution = 'repo'
+          }
         }
+        scm {
+          url = 'https://github.com/dimovelev/load-to-docker'
+          connection = 'scm:https://github.com/dimovelev/load-to-docker.git'
+          developerConnection = 'scm:git://github.com/dimovelev/load-to-docker.git'
+        }
+        developers {
+          developer {
+            id = 'dimo'
+            name = 'Dimo Velev'
+            email = 'dimo@prime157.com'
+          }
+        }
+      }
     }
+  }
 }
+
+artifacts {
+  archives javadocJar, sourcesJar
+}
+
+signing {
+  sign configurations.archives
+}
+
+//signing {
+//    sign publishing.publications
+//}
+
+project.tasks.matching { it -> it.name.startsWith('publish') }.forEach { it -> it.dependsOn(signArchives) }
+//publishPluginMavenPublicationToMavenLocal.dependsOn(signMavenJavaPublication)
