@@ -1,0 +1,5 @@
+rootProject.name = 'load-to-docker'
+include 'load-to-docker-common'
+include 'load-to-docker-maven-plugin'
+include 'load-to-docker-gradle-plugin'
+

@@ -1,0 +1,54 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.researchgate.release'
+    id 'signing'
+}
+
+
+group 'com.prime157.docker'
+version '0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api 'org.apache.httpcomponents:httpclient:4.5.13'
+    api 'com.kohlschutter.junixsocket:junixsocket-common:2.4.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+java {
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                description = 'Common classes for loading a tarball to docker'
+                url = 'https://github.com/dimovelev/load-to-docker'
+                inceptionYear = '2022'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://opensource.org/licenses/MIT'
+                        distribution = 'repo'
+                    }
+                }
+                scm {
+                    url = 'https://github.com/dimovelev/load-to-docker'
+                    connection = 'scm:https://github.com/dimovelev/load-to-docker.git'
+                    developerConnection = 'scm:git://github.com/dimovelev/load-to-docker.git'
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}

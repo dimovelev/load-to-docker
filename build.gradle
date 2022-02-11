@@ -1,0 +1,25 @@
+plugins {
+    id 'net.researchgate.release' version '2.8.1'
+}
+
+group 'com.prime157.docker'
+version '0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+release {
+    scmAdapters = [
+            net.researchgate.release.GitAdapter,
+    ]
+    buildTasks = []
+    git {
+        requireBranch = 'feature/initial'
+        pushToRemote = 'origin'
+        pushToBranchPrefix = ''
+        commitVersionFileOnly = false
+        signTag = false
+    }
+}
+//afterReleaseBuild.dependsOn uploadArchives
