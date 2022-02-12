@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.prime157.docker'
-version '0.1-SNAPSHOT'
+version '0.1'
 
 repositories {
   mavenCentral()
@@ -32,6 +32,7 @@ publishing {
   publications {
     mavenJava(MavenPublication) {
       pom {
+        name = "load-to-docker-maven-plugin"
         description = 'Maven plugin to load a tarball to docker'
         url = 'https://github.com/dimovelev/load-to-docker'
         inceptionYear = '2022'

@@ -74,7 +74,7 @@ in `build/jib-image.tar`):
 
 ```groovy
 plugins {
-  id 'com.prime157.docker.load-to-docker' version '0.1-SNAPSHOT'
+  id 'com.prime157.docker.load-to-docker' version '0.1'
 }
 load_to_docker {
   tarball = 'build/jib-image.tar'

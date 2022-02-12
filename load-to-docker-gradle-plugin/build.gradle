@@ -1,74 +1,86 @@
 plugins {
-    id 'java-gradle-plugin'
-    id 'maven-publish'
-    id 'signing'
+  id 'java-gradle-plugin'
+  id 'maven-publish'
+  id 'signing'
 }
 
 group 'com.prime157.docker'
-version '0.1-SNAPSHOT'
+version '0.1'
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 java {
-    withSourcesJar()
-    withJavadocJar()
+  withSourcesJar()
+  withJavadocJar()
 }
 
 gradlePlugin {
-    plugins {
-        loadToDocker {
-            id = 'com.prime157.docker.load-to-docker'
-            implementationClass = 'com.prime157.docker.load.maven.LoadToDockerGradlePlugin'
-        }
+  automatedPublishing = true
+  plugins {
+    loadToDocker {
+      id = 'com.prime157.docker.load-to-docker'
+      implementationClass = 'com.prime157.docker.load.maven.LoadToDockerGradlePlugin'
     }
+  }
 }
 
 dependencies {
-    implementation project(':load-to-docker-common')
+  implementation project(':load-to-docker-common')
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
 test {
-    useJUnitPlatform()
+  useJUnitPlatform()
 }
 
-publishing {
+afterEvaluate {
+  publishing {
     publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            pom {
-                description = 'Gradle plugin for loading a tarball to docker'
-                url = 'https://github.com/dimovelev/load-to-docker'
-                inceptionYear = '2022'
-                licenses {
-                    license {
-                        name = 'MIT'
-                        url = 'https://opensource.org/licenses/MIT'
-                        distribution = 'repo'
-                    }
-                }
-                scm {
-                    url = 'https://github.com/dimovelev/load-to-docker'
-                    connection = 'scm:https://github.com/dimovelev/load-to-docker.git'
-                    developerConnection = 'scm:git://github.com/dimovelev/load-to-docker.git'
-                }
-                developers {
-                    developer {
-                        id = 'dimo'
-                        name = 'Dimo Velev'
-                        email = 'dimo@prime157.com'
-                    }
-                }
+      withType(MavenPublication) {
+        pom {
+          inceptionYear = "2022"
+          url = 'https://github.com/dimovelev/load-to-docker'
+          description = 'Load tarballs to docker from within gradle'
+          licenses {
+            license {
+              name = 'MIT'
+              url = 'https://opensource.org/licenses/MIT'
+              distribution = 'repo'
             }
+          }
+          scm {
+            url = 'https://github.com/dimovelev/load-to-docker'
+            connection = 'scm:https://github.com/dimovelev/load-to-docker.git'
+            developerConnection = 'scm:git://github.com/dimovelev/load-to-docker.git'
+          }
+          developers {
+            developer {
+              id = 'dimo'
+              name = 'Dimo Velev'
+              email = 'dimo@prime157.com'
+            }
+          }
         }
+      }
+      pluginMaven {
+        pom {
+          name = "load-to-docker-gradle-plugin"
+        }
+      }
+      loadToDockerPluginMarkerMaven {
+        pom {
+          name = "load-to-docker-grale-plugin-marker"
+        }
+      }
     }
+  }
 }
 
 signing {
-    sign publishing.publications
+  sign publishing.publications
 }
 
