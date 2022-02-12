@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.prime157.docker'
-version '0.1'
+version '0.2-SNAPSHOT'
 
 repositories {
     mavenCentral()
