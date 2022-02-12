@@ -86,3 +86,13 @@ load_to_docker {
   socket `/var/run/docker.sock`.
 * The tarball can either be an absolute path or a path relative to the project's root path.
 * The task is called `loadToDocker`
+* The gradle plugin is only published to maven central - you will need to configure gradle to load plugins from there,
+  e.g. in your `settings.gradle` you need to add mavenCentral:
+
+```groovy
+pluginManagement {
+  repositories {
+    mavenCentral()
+  }
+}
+```
